@@ -21,6 +21,7 @@ import mill.scalalib._
 import mill.scalalib.publish._
 import scala.jdk.CollectionConverters._
 import io.kipp.mill.ci.release.CiReleaseModule
+import io.kipp.mill.ci.release.SonatypeHost
 
 val smithyVersion = "1.27.1"
 val org = "com.disneystreaming.smithy"
@@ -151,6 +152,8 @@ class AWSSpec(val service: String) extends BaseModule {
 trait BaseModule extends JavaModule with CiReleaseModule {
 
   def pomDescription: String
+
+  override def sonatypeHost = Some(SonatypeHost.s01)
 
   def pomSettings: T[PomSettings] = PomSettings(
     pomDescription,
