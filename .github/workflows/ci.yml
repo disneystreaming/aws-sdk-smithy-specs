@@ -1,10 +1,10 @@
 name: Continuous Integration
 
 on:
-  pull_request:
-    branches: ["*"]
+  # pull_request:
+  #   branches: ["*"]
   push:
-    branches: ["main"]
+    # branches: ["main"]
     tags: ["v*"]
 
 concurrency:
@@ -13,10 +13,11 @@ concurrency:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  JAVA_OPTS: -XX:MaxMetaspaceSize=4G -Xss2m -Xms512M -Xmx6G -XX:ReservedCodeCacheSize=256M
 
 jobs:
   build:
-    name: Build and Test
+    name: Package and publish
     runs-on: ubuntu-latest
     steps:
       - name: Checkout current branch (full)
@@ -39,12 +40,11 @@ jobs:
         with:
           mill-version: ${{ env.MILL_VERSION }}
 
-      - name: Publish local
-        run: mill -k --disable-ticker __.publishLocal
-
       - name: Publish ${{ github.ref }}
         if: startsWith(github.ref, 'refs/tags/v')
-        run: mill -i io.kipp.mill.ci.release.ReleaseModule/publishAll
+        run: |
+          mill -i __.publishArtifacts
+          mill -i io.kipp.mill.ci.release.ReleaseModule/publishAll
         env:
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
