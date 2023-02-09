@@ -34,6 +34,7 @@ val allSpecs = os
   .map(_.last)
   .filter(_.endsWith(".json"))
   .map(_.dropRight(".json".length()))
+  .take(5)
 
 def writeAllSpecs = T {
   T.traverse(allSpecs.map(aws(_)))(_.writeForCheckIn())
