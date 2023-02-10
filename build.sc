@@ -67,7 +67,7 @@ object summary extends BaseModule {
   }
 
   def resources: Sources = T.sources {
-    val target = T.dest / "META-INF" / "summary.json"
+    val target = T.dest / "summary.json"
     os.write.over(target, summaryJson(), createFolders = true)
     target
   }
@@ -144,7 +144,7 @@ class AWSSpec(val service: String) extends BaseModule {
     val manifestTarget = T.dest / "META-INF" / "smithy" / "manifest"
     os.write.over(target, trimmedModel(), createFolders = true)
     os.write.over(manifestTarget, shortFileName, createFolders = true)
-    Seq(PathRef(target), PathRef(manifestTarget))
+    Seq(PathRef(T.dest))
   }
 
 }
