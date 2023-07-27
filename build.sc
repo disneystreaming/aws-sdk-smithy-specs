@@ -1,5 +1,5 @@
 import software.amazon.smithy.model.traits.ProtocolDefinitionTrait
-import $ivy.`io.chris-kipp::mill-ci-release::0.1.5`
+import $ivy.`io.chris-kipp::mill-ci-release::0.1.9`
 import $ivy.`software.amazon.smithy:smithy-model:1.27.1`
 import $ivy.`software.amazon.smithy:smithy-rules-engine:1.27.1`
 import $ivy.`software.amazon.smithy:smithy-build:1.27.1`
@@ -74,10 +74,11 @@ object summary extends BaseModule {
 
 }
 
-object aws extends Cross[AWSSpec](allSpecs: _*)
+object aws extends Cross[AWSSpec](allSpecs)
 
-class AWSSpec(val service: String) extends BaseModule {
+trait AWSSpec extends Cross.Module[String] with BaseModule {
 
+  val service = crossValue
   val pomDescription: String = s"Jar containing smithy spec for $service"
 
   val namespace = service.filter(_.isLetterOrDigit)
