@@ -1,4 +1,3 @@
-import software.amazon.smithy.model.traits.ProtocolDefinitionTrait
 import $ivy.`io.chris-kipp::mill-ci-release::0.1.9`
 import $ivy.`software.amazon.smithy:smithy-model:1.27.1`
 import $ivy.`software.amazon.smithy:smithy-rules-engine:1.27.1`
@@ -11,8 +10,9 @@ import $ivy.`software.amazon.smithy:smithy-aws-cloudformation-traits:1.27.1`
 
 import mill.define.Sources
 import software.amazon.smithy.model.transform.ModelTransformer
-import software.amazon.smithy.model.shapes.SmithyIdlModelSerializer
+import software.amazon.smithy.model.shapes._
 import software.amazon.smithy.model.Model
+import software.amazon.smithy.model.traits._
 import java.time.format.DateTimeFormatter
 import java.time.DateTimeException
 import java.nio.file.Path
@@ -56,7 +56,11 @@ object summary extends BaseModule {
           "protocol" -> specModule
             .protocol()
             .map(ujson.Str(_))
-            .getOrElse(ujson.Null)
+            .getOrElse(ujson.Null),
+          "streamingOperations" ->
+            specModule
+              .streamingOperations()
+              .map(ujson.Str(_))
         )
       }
     }()
@@ -124,6 +128,28 @@ trait AWSSpec extends Cross.Module[String] with BaseModule {
       !model.getShapesWithTrait(protocolShape).isEmpty
     }
     appliedProtocol.map(_.toShapeId.getName())
+  }
+
+  def streamingOperations: T[List[String]] = T {
+    val model = assembleModel()
+    def memberHasStreaming(shapeId: ShapeId): Boolean = {
+      model
+        .expectShape(shapeId)
+        .members()
+        .asScala
+        .map(m => model.expectShape(m.getTarget()))
+        .exists(_.hasTrait(classOf[StreamingTrait]))
+    }
+    model
+      .getOperationShapes()
+      .asScala
+      .filter { op =>
+        val inputIsStreaming = memberHasStreaming(op.getInputShape())
+        val outputIsStreaming = memberHasStreaming(op.getOutputShape())
+        inputIsStreaming || outputIsStreaming
+      }
+      .map(_.getId().getName())
+      .toList
   }
 
   def trimmedModel = T {
