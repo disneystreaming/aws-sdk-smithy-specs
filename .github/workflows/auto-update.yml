@@ -1,0 +1,48 @@
+name: Update submodule references
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 12 * * 1" # At 12:15 on Monday.
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build:
+    name: Package and publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current branch (full)
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Export publish version
+        run: echo "PUBLISH_VERSION=$(date +%Y.%M.%d)" >> $GITHUB_ENV
+
+      - name: Run the auto-update script
+        run: |
+          # setup the username and email
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+
+          ./scripts/auto-update.sh
+
+      - name: Create tag
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { PUBLISH_VERSION } = process.env
+            const tag = `v${PUBLISH_VERSION};
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `refs/tags/${tag}`,
+              sha: context.sha
+            })
