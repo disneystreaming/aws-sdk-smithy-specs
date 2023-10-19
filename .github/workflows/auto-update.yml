@@ -39,7 +39,7 @@ jobs:
         with:
           script: |
             const { PUBLISH_VERSION } = process.env
-            const tag = `v${PUBLISH_VERSION};
+            const tag = `v${PUBLISH_VERSION}`;
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
