@@ -16,6 +16,9 @@ jobs:
   build:
     name: Package and publish
     runs-on: ubuntu-latest
+    permissions:
+      # workflow triggered from tag creation can't run w/o this permission
+      actions: write
     steps:
       - name: Checkout current branch (full)
         uses: actions/checkout@v2
