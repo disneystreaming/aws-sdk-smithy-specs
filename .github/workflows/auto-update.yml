@@ -16,9 +16,6 @@ jobs:
   build:
     name: Package and publish
     runs-on: ubuntu-latest
-    permissions:
-      # workflow triggered from tag creation can't run w/o this permission
-      actions: write
     steps:
       - name: Checkout current branch (full)
         uses: actions/checkout@v2
@@ -37,6 +34,10 @@ jobs:
 
           ./scripts/auto-update.sh
 
+      # The original GITHUB_TOKEN has all it needs to create the tag
+      # but when it does, the CI workflow that should run, will not
+      # To workaround this issue, we create a temporary token, with more
+      # permissions to create tag
       - name: Generate token
         id: generate-token
         uses: tibdex/github-app-token@v2
