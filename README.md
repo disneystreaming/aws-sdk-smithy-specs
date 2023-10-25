@@ -1,3 +1,5 @@
+![Maven Central](https://img.shields.io/maven-central/v/com.disneystreaming.smithy/aws-kinesis-spec)
+
 #### aws-sdk-specs
 
 This repository aims at building and publishing artifacts containing the smithy specifications for the AWS SDK.
