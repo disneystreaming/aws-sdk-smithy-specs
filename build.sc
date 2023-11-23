@@ -186,9 +186,9 @@ trait BaseModule extends JavaModule with CiReleaseModule {
     pomDescription,
     "com.disneystreaming.smithy",
     licenses = Seq(License.`Apache-2.0`),
-    url = "http://github.com/disneystreaming/aws-sdk-specs",
+    url = "http://github.com/disneystreaming/aws-sdk-smithy-specs",
     versionControl = VersionControl(
-      Some("https://github.com/disneystreaming/aws-sdk-specs")
+      Some("https://github.com/disneystreaming/aws-sdk-smithy-specs")
     ),
     developers = Seq(
       Developer(
