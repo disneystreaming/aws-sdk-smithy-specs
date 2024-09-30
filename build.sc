@@ -94,6 +94,7 @@ trait AWSSpec extends Cross.Module[String] with BaseModule {
     ivy"software.amazon.smithy:smithy-aws-traits:$smithyVersion",
     ivy"software.amazon.smithy:smithy-aws-cloudformation-traits:$smithyVersion",
     ivy"software.amazon.smithy:smithy-aws-iam-traits:$smithyVersion",
+    ivy"software.amazon.smithy:smithy-aws-endpoints:$smithyVersion",
     ivy"software.amazon.smithy:smithy-waiters:$smithyVersion"
   )
 
