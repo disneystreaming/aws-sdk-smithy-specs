@@ -5,6 +5,7 @@ on:
   #   branches: ["*"]
   push:
     # branches: ["main"]
+    branches: ["dependency-bumps"]
     tags: ["v*"]
 
 concurrency:
