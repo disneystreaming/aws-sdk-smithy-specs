@@ -4,8 +4,10 @@ import $ivy.`software.amazon.smithy:smithy-rules-engine:1.51.0`
 import $ivy.`software.amazon.smithy:smithy-build:1.51.0`
 import $ivy.`software.amazon.smithy:smithy-aws-traits:1.51.0`
 import $ivy.`software.amazon.smithy:smithy-aws-iam-traits:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-aws-endpoints:1.51.0`
 import $ivy.`software.amazon.smithy:smithy-waiters:1.51.0`
 import $ivy.`software.amazon.smithy:smithy-aws-cloudformation-traits:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-aws-smoke-test-model:1.51.0`
 
 import software.amazon.smithy.aws.traits.protocols.AwsProtocolTrait
 import mill.define.Sources
@@ -94,8 +96,9 @@ trait AWSSpec extends Cross.Module[String] with BaseModule {
     ivy"software.amazon.smithy:smithy-aws-traits:$smithyVersion",
     ivy"software.amazon.smithy:smithy-aws-cloudformation-traits:$smithyVersion",
     ivy"software.amazon.smithy:smithy-aws-iam-traits:$smithyVersion",
+    ivy"software.amazon.smithy:smithy-waiters:$smithyVersion",
     ivy"software.amazon.smithy:smithy-aws-endpoints:$smithyVersion",
-    ivy"software.amazon.smithy:smithy-waiters:$smithyVersion"
+    ivy"software.amazon.smithy:smithy-aws-smoke-test-model:$smithyVersion"
   )
 
   def writeForCheckIn() = T.task {
