@@ -1,13 +1,13 @@
-import $ivy.`io.chris-kipp::mill-ci-release::0.1.9`
-import $ivy.`software.amazon.smithy:smithy-model:1.27.1`
-import $ivy.`software.amazon.smithy:smithy-rules-engine:1.27.1`
-import $ivy.`software.amazon.smithy:smithy-build:1.27.1`
-import software.amazon.smithy.aws.traits.protocols.AwsProtocolTrait
-import $ivy.`software.amazon.smithy:smithy-aws-traits:1.27.1`
-import $ivy.`software.amazon.smithy:smithy-aws-iam-traits:1.27.1`
-import $ivy.`software.amazon.smithy:smithy-waiters:1.27.1`
-import $ivy.`software.amazon.smithy:smithy-aws-cloudformation-traits:1.27.1`
+import $ivy.`io.chris-kipp::mill-ci-release::0.1.10`
+import $ivy.`software.amazon.smithy:smithy-model:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-rules-engine:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-build:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-aws-traits:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-aws-iam-traits:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-waiters:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-aws-cloudformation-traits:1.51.0`
 
+import software.amazon.smithy.aws.traits.protocols.AwsProtocolTrait
 import mill.define.Sources
 import software.amazon.smithy.model.transform.ModelTransformer
 import software.amazon.smithy.model.shapes._
@@ -23,7 +23,7 @@ import scala.jdk.CollectionConverters._
 import io.kipp.mill.ci.release.CiReleaseModule
 import io.kipp.mill.ci.release.SonatypeHost
 
-val smithyVersion = "1.27.1"
+val smithyVersion = "1.51.0"
 val org = "com.disneystreaming.smithy"
 
 def specFolder =
