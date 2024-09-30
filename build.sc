@@ -72,7 +72,7 @@ object summary extends BaseModule {
     )
   }
 
-  def resources: Sources = T.sources {
+  def resources: T[Seq[PathRef]] = T.sources {
     val target = T.dest / "summary.json"
     os.write.over(target, summaryJson(), createFolders = true)
     target
@@ -170,7 +170,7 @@ trait AWSSpec extends Cross.Module[String] with BaseModule {
     map(Path.of(fullFileName))
   }
 
-  override def resources: Sources = T.sources {
+  override def resources: T[Seq[PathRef]] = T.sources {
     val target = T.dest / "META-INF" / "smithy" / shortFileName
     val manifestTarget = T.dest / "META-INF" / "smithy" / "manifest"
     os.write.over(target, trimmedModel(), createFolders = true)
