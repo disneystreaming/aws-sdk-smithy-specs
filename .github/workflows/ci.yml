@@ -1,8 +1,8 @@
 name: Continuous Integration
 
 on:
-  # pull_request:
-  #   branches: ["*"]
+  pull_request:
+    branches: ["*"]
   push:
     # branches: ["main"]
     tags: ["v*"]
@@ -40,13 +40,17 @@ jobs:
         with:
           mill-version: ${{ env.MILL_VERSION }}
 
+      - name: Build packages
+        run: |
+          mill -i __.jar
+
       - name: Publish ${{ github.ref }}
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
           mill -i __.publishArtifacts
           mill -i io.kipp.mill.ci.release.ReleaseModule/publishAll
         env:
-          PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+          PGP_PASSPHRASE: ""
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
           SONATYPE_PASSWORD: ${{ secrets.S01_SONATYPE_PASSWORD }}
           SONATYPE_USERNAME: ${{ secrets.S01_SONATYPE_USERNAME }}
