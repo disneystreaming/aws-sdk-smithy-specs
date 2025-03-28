@@ -1,4 +1,4 @@
-import $ivy.`io.chris-kipp::mill-ci-release::0.1.9`
+import $ivy.`io.chris-kipp::mill-ci-release::0.2.1`
 import $ivy.`software.amazon.smithy:smithy-model:1.27.1`
 import $ivy.`software.amazon.smithy:smithy-rules-engine:1.27.1`
 import $ivy.`software.amazon.smithy:smithy-build:1.27.1`
