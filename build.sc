@@ -30,11 +30,6 @@ val org = "com.disneystreaming.smithy"
 
 def workspaceRoot = os.Path(System.getenv("MILL_WORKSPACE_ROOT"))
 
-def check = T.input {
-  println("foo")
-  Runtime.getRuntime().maxMemory()
-}
-
 def specFolder =
   workspaceRoot / "aws-sdk-js-v3" / "codegen" / "sdk-codegen" / "aws-models"
 

@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: ["*"]
   push:
-    branches: ["*"]
+    # branches: ["main"]
     tags: ["v*"]
 
 concurrency:
@@ -33,7 +33,6 @@ jobs:
 
       - name: Generate artifacts
         run: |
-          ./mill -i show check
           ./mill -i __.publishArtifacts
 
       - name: Publish ${{ github.ref }}
