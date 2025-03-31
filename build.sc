@@ -1,13 +1,15 @@
-import $ivy.`io.chris-kipp::mill-ci-release::0.2.1`
-import $ivy.`software.amazon.smithy:smithy-model:1.27.1`
-import $ivy.`software.amazon.smithy:smithy-rules-engine:1.27.1`
-import $ivy.`software.amazon.smithy:smithy-build:1.27.1`
-import software.amazon.smithy.aws.traits.protocols.AwsProtocolTrait
-import $ivy.`software.amazon.smithy:smithy-aws-traits:1.27.1`
-import $ivy.`software.amazon.smithy:smithy-aws-iam-traits:1.27.1`
-import $ivy.`software.amazon.smithy:smithy-waiters:1.27.1`
-import $ivy.`software.amazon.smithy:smithy-aws-cloudformation-traits:1.27.1`
+import $ivy.`io.chris-kipp::mill-ci-release::0.1.10`
+import $ivy.`software.amazon.smithy:smithy-model:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-rules-engine:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-build:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-aws-traits:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-aws-iam-traits:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-aws-endpoints:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-waiters:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-aws-cloudformation-traits:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-aws-smoke-test-model:1.51.0`
 
+import software.amazon.smithy.aws.traits.protocols.AwsProtocolTrait
 import mill.define.Sources
 import software.amazon.smithy.model.transform.ModelTransformer
 import software.amazon.smithy.model.shapes._
@@ -23,11 +25,13 @@ import scala.jdk.CollectionConverters._
 import io.kipp.mill.ci.release.CiReleaseModule
 import io.kipp.mill.ci.release.SonatypeHost
 
-val smithyVersion = "1.27.1"
+val smithyVersion = "1.51.0"
 val org = "com.disneystreaming.smithy"
 
+def workspaceRoot = os.Path(System.getenv("MILL_WORKSPACE_ROOT"))
+
 def specFolder =
-  os.pwd / "aws-sdk-js-v3" / "codegen" / "sdk-codegen" / "aws-models"
+  workspaceRoot / "aws-sdk-js-v3" / "codegen" / "sdk-codegen" / "aws-models"
 
 val allSpecs = os
   .list(specFolder)
@@ -70,7 +74,7 @@ object summary extends BaseModule {
     )
   }
 
-  def resources: Sources = T.sources {
+  def resources: T[Seq[PathRef]] = T.sources {
     val target = T.dest / "summary.json"
     os.write.over(target, summaryJson(), createFolders = true)
     target
@@ -94,7 +98,9 @@ trait AWSSpec extends Cross.Module[String] with BaseModule {
     ivy"software.amazon.smithy:smithy-aws-traits:$smithyVersion",
     ivy"software.amazon.smithy:smithy-aws-cloudformation-traits:$smithyVersion",
     ivy"software.amazon.smithy:smithy-aws-iam-traits:$smithyVersion",
-    ivy"software.amazon.smithy:smithy-waiters:$smithyVersion"
+    ivy"software.amazon.smithy:smithy-waiters:$smithyVersion",
+    ivy"software.amazon.smithy:smithy-aws-endpoints:$smithyVersion",
+    ivy"software.amazon.smithy:smithy-aws-smoke-test-model:$smithyVersion"
   )
 
   def writeForCheckIn() = T.task {
@@ -166,7 +172,7 @@ trait AWSSpec extends Cross.Module[String] with BaseModule {
     map(Path.of(fullFileName))
   }
 
-  override def resources: Sources = T.sources {
+  override def resources: T[Seq[PathRef]] = T.sources {
     val target = T.dest / "META-INF" / "smithy" / shortFileName
     val manifestTarget = T.dest / "META-INF" / "smithy" / "manifest"
     os.write.over(target, trimmedModel(), createFolders = true)

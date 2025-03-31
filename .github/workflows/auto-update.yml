@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0
 
       - name: Export publish version
-        run: echo "PUBLISH_VERSION=$(date +%Y.%M.%d)" >> $GITHUB_ENV
+        run: echo "PUBLISH_VERSION=$(date +%Y.%m.%d)" >> $GITHUB_ENV
 
       - name: Run the auto-update script
         run: |
