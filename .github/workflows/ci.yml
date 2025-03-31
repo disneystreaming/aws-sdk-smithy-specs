@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: ["*"]
   push:
-    # branches: ["main"]
+    branches: ["*"]
     tags: ["v*"]
 
 concurrency:
@@ -30,15 +30,16 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: adopt
-          java-version: 11
+          java-version: 17
 
-      - name: Get mill version
-        run: echo "MILL_VERSION=$(cat .mill-version)" >> $GITHUB_ENV
+      - name: Generate artifacts
+        run: |
+          ./mill -i show check
+          ./mill -i __.publishArtifacts
 
       - name: Publish ${{ github.ref }}
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          ./mill -i __.publishArtifacts
           ./mill -i io.kipp.mill.ci.release.ReleaseModule/publishAll
         env:
           PGP_PASSPHRASE: ""

@@ -1,4 +1,4 @@
-import $ivy.`io.chris-kipp::mill-ci-release::0.1.10`
+import $ivy.`io.chris-kipp::mill-ci-release::0.2.1`
 import $ivy.`software.amazon.smithy:smithy-model:1.51.0`
 import $ivy.`software.amazon.smithy:smithy-rules-engine:1.51.0`
 import $ivy.`software.amazon.smithy:smithy-build:1.51.0`
@@ -29,6 +29,10 @@ val smithyVersion = "1.51.0"
 val org = "com.disneystreaming.smithy"
 
 def workspaceRoot = os.Path(System.getenv("MILL_WORKSPACE_ROOT"))
+
+def check = T.input {
+  Runtime.getRuntime().maxMemory()
+}
 
 def specFolder =
   workspaceRoot / "aws-sdk-js-v3" / "codegen" / "sdk-codegen" / "aws-models"
