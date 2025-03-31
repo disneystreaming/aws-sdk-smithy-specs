@@ -206,3 +206,7 @@ trait BaseModule extends JavaModule with CiReleaseModule {
   )
 
 }
+
+def publishAll(ev: mill.eval.Evaluator): Command[Unit] = T.command {
+  io.kipp.mill.ci.release.ReleaseModule.publishAll(ev)()
+}
