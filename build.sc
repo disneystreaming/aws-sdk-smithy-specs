@@ -28,8 +28,10 @@ import io.kipp.mill.ci.release.SonatypeHost
 val smithyVersion = "1.51.0"
 val org = "com.disneystreaming.smithy"
 
+def workspaceRoot = os.Path(System.getenv("MILL_WORKSPACE_ROOT"))
+
 def specFolder =
-  os.pwd / "aws-sdk-js-v3" / "codegen" / "sdk-codegen" / "aws-models"
+  workspaceRoot / "aws-sdk-js-v3" / "codegen" / "sdk-codegen" / "aws-models"
 
 val allSpecs = os
   .list(specFolder)
