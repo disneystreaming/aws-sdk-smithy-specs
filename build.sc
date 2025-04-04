@@ -160,7 +160,7 @@ trait AWSSpec extends Cross.Module[String] with BaseModule {
 
   def trimmedModel = T {
     val namespacesToSkip =
-      Set("smithy.rules", "smithy.test")
+      Set("smithy.rules")
 
     val model = assembleModel()
     val serializer: SmithyIdlModelSerializer = SmithyIdlModelSerializer
