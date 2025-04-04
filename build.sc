@@ -25,7 +25,7 @@ import scala.jdk.CollectionConverters._
 import io.kipp.mill.ci.release.CiReleaseModule
 import io.kipp.mill.ci.release.SonatypeHost
 
-val smithyVersion = "1.51.0"
+val smithyVersion = "1.56.0"
 val org = "com.disneystreaming.smithy"
 
 def workspaceRoot = os.Path(System.getenv("MILL_WORKSPACE_ROOT"))
