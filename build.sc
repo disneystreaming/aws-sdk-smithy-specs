@@ -1,13 +1,13 @@
 import $ivy.`io.chris-kipp::mill-ci-release::0.2.1`
-import $ivy.`software.amazon.smithy:smithy-model:1.51.0`
-import $ivy.`software.amazon.smithy:smithy-rules-engine:1.51.0`
-import $ivy.`software.amazon.smithy:smithy-build:1.51.0`
-import $ivy.`software.amazon.smithy:smithy-aws-traits:1.51.0`
-import $ivy.`software.amazon.smithy:smithy-aws-iam-traits:1.51.0`
-import $ivy.`software.amazon.smithy:smithy-aws-endpoints:1.51.0`
-import $ivy.`software.amazon.smithy:smithy-waiters:1.51.0`
-import $ivy.`software.amazon.smithy:smithy-aws-cloudformation-traits:1.51.0`
-import $ivy.`software.amazon.smithy:smithy-aws-smoke-test-model:1.51.0`
+import $ivy.`software.amazon.smithy:smithy-model:1.56.0`
+import $ivy.`software.amazon.smithy:smithy-rules-engine:1.56.0`
+import $ivy.`software.amazon.smithy:smithy-build:1.56.0`
+import $ivy.`software.amazon.smithy:smithy-aws-traits:1.56.0`
+import $ivy.`software.amazon.smithy:smithy-aws-iam-traits:1.56.0`
+import $ivy.`software.amazon.smithy:smithy-aws-endpoints:1.56.0`
+import $ivy.`software.amazon.smithy:smithy-waiters:1.56.0`
+import $ivy.`software.amazon.smithy:smithy-aws-cloudformation-traits:1.56.0`
+import $ivy.`software.amazon.smithy:smithy-aws-smoke-test-model:1.56.0`
 
 import software.amazon.smithy.aws.traits.protocols.AwsProtocolTrait
 import mill.define.Sources
@@ -159,11 +159,14 @@ trait AWSSpec extends Cross.Module[String] with BaseModule {
   }
 
   def trimmedModel = T {
+    val namespacesToSkip =
+      Set("smithy.rules", "smithy.test")
+
     val model = assembleModel()
     val serializer: SmithyIdlModelSerializer = SmithyIdlModelSerializer
       .builder()
-      .shapeFilter(_.getId().getNamespace() != "smithy.rules")
-      .traitFilter(_.toShapeId().getNamespace() != "smithy.rules")
+      .shapeFilter(s => !namespacesToSkip(s.getId().getNamespace()))
+      .traitFilter(t => !namespacesToSkip(t.toShapeId().getNamespace()))
       .build()
 
     val map =
