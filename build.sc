@@ -95,12 +95,7 @@ trait AWSSpec extends Cross.Module[String] with BaseModule {
   override def artifactName: T[String] = T(s"aws-$service-spec")
 
   override def ivyDeps: T[Agg[Dep]] = Agg(
-    ivy"software.amazon.smithy:smithy-aws-traits:$smithyVersion",
-    ivy"software.amazon.smithy:smithy-aws-cloudformation-traits:$smithyVersion",
-    ivy"software.amazon.smithy:smithy-aws-iam-traits:$smithyVersion",
-    ivy"software.amazon.smithy:smithy-waiters:$smithyVersion",
-    ivy"software.amazon.smithy:smithy-aws-endpoints:$smithyVersion",
-    ivy"software.amazon.smithy:smithy-aws-smoke-test-model:$smithyVersion"
+    ivy"software.amazon.smithy:smithy-aws-traits:$smithyVersion"
   )
 
   def writeForCheckIn() = T.task {
@@ -160,7 +155,7 @@ trait AWSSpec extends Cross.Module[String] with BaseModule {
 
   def trimmedModel = T {
     val namespacesToSkip =
-      Set("smithy.rules")
+      Set("smithy.rules", "aws.test", "smithy.waiters", "smithy.test")
 
     val model = assembleModel()
     val serializer: SmithyIdlModelSerializer = SmithyIdlModelSerializer
