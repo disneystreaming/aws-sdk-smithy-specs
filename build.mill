@@ -1,4 +1,3 @@
-import $ivy.`io.chris-kipp::mill-ci-release::0.2.1`
 import $ivy.`software.amazon.smithy:smithy-model:1.56.0`
 import $ivy.`software.amazon.smithy:smithy-rules-engine:1.56.0`
 import $ivy.`software.amazon.smithy:smithy-build:1.56.0`
@@ -8,7 +7,9 @@ import $ivy.`software.amazon.smithy:smithy-aws-endpoints:1.56.0`
 import $ivy.`software.amazon.smithy:smithy-waiters:1.56.0`
 import $ivy.`software.amazon.smithy:smithy-aws-cloudformation-traits:1.56.0`
 import $ivy.`software.amazon.smithy:smithy-aws-smoke-test-model:1.56.0`
+import $ivy.`de.tototec::de.tobiasroeser.mill.vcs.version::0.4.1`
 
+import de.tobiasroeser.mill.vcs.version.VcsVersion
 import software.amazon.smithy.aws.traits.protocols.AwsProtocolTrait
 import mill.define.Sources
 import software.amazon.smithy.model.transform.ModelTransformer
@@ -22,8 +23,8 @@ import mill._
 import mill.scalalib._
 import mill.scalalib.publish._
 import scala.jdk.CollectionConverters._
-import io.kipp.mill.ci.release.CiReleaseModule
-import io.kipp.mill.ci.release.SonatypeHost
+import $ivy.`com.lihaoyi::mill-contrib-sonatypecentral:`
+import mill.contrib.sonatypecentral.SonatypeCentralPublishModule
 
 val smithyVersion = "1.56.0"
 val org = "com.disneystreaming.smithy"
@@ -180,11 +181,14 @@ trait AWSSpec extends Cross.Module[String] with BaseModule {
 
 }
 
-trait BaseModule extends JavaModule with CiReleaseModule {
+trait BaseModule extends JavaModule with SonatypeCentralPublishModule {
+
+  override def publishVersion: T[String] = T {
+    if (isCI()) super.publishVersion() else "dev-SNAPSHOT"
+    if (isCI()) VcsVersion.vcsState().format() else "dev-SNAPSHOT"
+  }
 
   def pomDescription: String
-
-  override def sonatypeHost = Some(SonatypeHost.s01)
 
   def pomSettings: T[PomSettings] = PomSettings(
     pomDescription,
