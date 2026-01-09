@@ -184,8 +184,7 @@ trait AWSSpec extends Cross.Module[String] with BaseModule {
 trait BaseModule extends JavaModule with SonatypeCentralPublishModule {
 
   override def publishVersion: T[String] = T {
-    if (isCI()) super.publishVersion() else "dev-SNAPSHOT"
-    if (isCI()) VcsVersion.vcsState().format() else "dev-SNAPSHOT"
+    VcsVersion.vcsState().format()
   }
 
   def pomDescription: String
