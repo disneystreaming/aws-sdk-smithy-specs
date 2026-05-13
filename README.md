@@ -1,3 +1,10 @@
+# Archived
+
+This repository has been superseded by:
+
+- AWS publishing official Smithy specs for their services: https://aws.amazon.com/blogs/aws/introducing-aws-api-models-and-publicly-available-resources-for-aws-api-definitions/ (repo: https://github.com/aws/api-models-aws)
+- smithy4s using those: https://disneystreaming.github.io/smithy4s/docs/protocols/aws/aws
+
 ![Maven Central](https://img.shields.io/maven-central/v/com.disneystreaming.smithy/aws-kinesis-spec)
 
 #### aws-sdk-specs
